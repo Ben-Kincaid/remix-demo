@@ -4,22 +4,25 @@ import { useGlobalState } from "~/hooks/useGlobalState";
 
 export default function Index() {
 	// Pull any values or setters relating to global state
-	const { message, setMessage } = useGlobalState();
+	const { catFacts, setCatFact } = useGlobalState();
 
 	// We can modify values derived from loader data on the client
-	const handleChange: ChangeEventHandler<HTMLInputElement> = (evt) => {
-		setMessage(evt.target.value)
+	const handleFactChange = (id: string): ChangeEventHandler<HTMLInputElement> => (evt) => {
+		setCatFact(id, evt.target.value)
 	}
 
 	return (
 		<main id="home">
-			<input
-				name="message"
-				type="text"
-				placeholder="Enter text..."
-				onChange={handleChange}
-				value={message}
-			/>
+			{catFacts.map((fact) => (
+				<input
+					key={fact._id}
+					name={`fact-${fact._id}`}
+					type="text"
+					placeholder="Enter text..."
+					onChange={handleFactChange(fact._id)}
+					value={fact.text}
+				/>
+			))}
 		</main>
 	);
 }
